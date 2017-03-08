@@ -11,3 +11,18 @@ dokumentáció - 9%
 
 router - Kell nem kell?
 
+=====================================================================================
+
+#Hardware setup:
+ 
+ -Teensy 3.1 - microcontroller
+ 
+ -BMP180 - Barometric altitude sensor
+ 
+ -MPU6050 - 6DOF IMU
+ 
+ -9g SERVO
+ 
+ -ESP8266
+ 
+ -3.7v 1s lipo
