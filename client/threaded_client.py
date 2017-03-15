@@ -2,7 +2,6 @@ import pyqtgraph as pg
 import socket
 import _thread as  tr
 import time
-import sys
 from pyqtgraph.Qt import QtGui, QtCore
 
 DATA = []
@@ -12,7 +11,6 @@ def dataReceiving(delay):
         time.sleep(delay)
         DATA.append(int(sock.recv(BUFFER)))
         print(DATA)
-
 
 def plotDrawing(delay):
     pw = pg.plot()
@@ -39,5 +37,3 @@ logInMessage()
 
 tr.start_new_thread(dataReceiving, (2, ))
 tr.start_new_thread(plotDrawing, (0.2, ))
-
-
