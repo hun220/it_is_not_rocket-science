@@ -200,7 +200,7 @@ void loop()
   display.setTextSize(2);
   display.print(alt);display.setTextSize(1);display.println(" m");
 	display.display();
-  
+
     count = millis(); //Stopper tárolása
     }
 
