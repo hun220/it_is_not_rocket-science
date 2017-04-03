@@ -1,12 +1,11 @@
 import sys
 import socket
-import time
 from queue import Queue
 from threading import Thread
 from pyqtgraph import PlotWidget
 from PyQt5 import QtCore, QtWidgets, QtGui
 
-IP = "192.168.0.14"
+IP = ""
 PORT = 333
 
 def TCPconnection(q):
@@ -28,7 +27,7 @@ class Ui_applicationGUI(QtWidgets.QWidget):
         self.IPinput.setGeometry(QtCore.QRect(12, 10, 131, 20))
         self.IPinput.setObjectName("IPinput")
         self.connectButton = QtWidgets.QPushButton(applicationGUI)
-        self.connectButton.setGeometry(QtCore.QRect(160, 10, 91, 23))
+        self.connectButton.setGeometry(QtCore.QRect(150, 10, 100, 23))
         self.connectButton.setObjectName("connectButton")
         self.disconnectButton = QtWidgets.QPushButton(applicationGUI)
         self.disconnectButton.setGeometry(QtCore.QRect(260, 10, 81, 23))
@@ -37,6 +36,7 @@ class Ui_applicationGUI(QtWidgets.QWidget):
         self.plotItem.setGeometry(QtCore.QRect(10, 40, 331, 251))
         self.plotItem.setObjectName("plotItem")
         self.connectButton.setEnabled(False)
+        self.disconnectButton.setEnabled(False)
 
         self.retranslateUi(applicationGUI)
         QtCore.QMetaObject.connectSlotsByName(applicationGUI)
@@ -60,6 +60,8 @@ class guiManager(Ui_applicationGUI):
         IP = text
         if IP != "":
             self.connectButton.setEnabled(True)
+        else:
+            self.connectButton.setEnabled(False)
 
     def runFunc(self, q):
         while True:
