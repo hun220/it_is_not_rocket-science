@@ -7,7 +7,8 @@
 // Gilicze Kristóf 2016/08/17   //
 // Összevont verzió 1.0        //
 ///////////////////////////////
-
+#include <ESP8266WiFi.h>
+#include <WiFiClient.h>
 #include <Wire.h>
 #include "functions.h"
 #include "mpu6050_defines.h" 
@@ -18,16 +19,27 @@ short int meres_sorszam = 0;
 #include <Adafruit_BMP085.h> 
 Adafruit_BMP085 bmp;
 float kezdeti_nyomas;
+
+//MPU6050
 float alt;
 float x_tengely_acc;
+
+//OLED
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #define OLED_RESET 4
 Adafruit_SSD1306 display(OLED_RESET);
 
+
+//WIFI
+WiFiServer server(234);
+WiFiClient client;
+
+
+
 void setup()
 {
-Wire.begin();			//I2C indítása
+Wire.begin(D4,D3);			//I2C indítása
 Serial.begin(115200);	//Serial kapcsolat indítása > USB hibakereséshez
 display.begin(SSD1306_SWITCHCAPVCC, 0x3C); //Képernyő indítása 0x3C címen (128x32)
 delay(800);
@@ -46,14 +58,26 @@ delay(800);
 //==========================================================
 //  TCP/IP kommunikáció létrehozása kapcsolodás a Routerhez
 //==========================================================
-
-
+  display.setCursor(20,10);
+  
+   WiFi.begin("hun220","Gurami66ginkO");
+   delay(1000);
+   while (WiFi.status() != WL_CONNECTED) {
+    display.print(".");
+    display.display();
+    delay(100);
+  }
   //OLED frissítése a hálozat állapotáról
   display.clearDisplay();
   display.setCursor(20,10);
   display.println("Network Online!");
+  display.println(WiFi.localIP());
+  server.begin();
+  //client.setNoDelay(1);
   display.display();
-  delay(900);
+  delay(3000);
+
+
   
 
 //=====================================================================================================================================
@@ -148,11 +172,33 @@ delay(800);
 
 void loop()
 {
+   
+  // wait for a new client:
+  if (!client) 
+  {
+      client = server.available();
+  }  
+  else
+  {
+     if (client.status() == CLOSED) 
+     {
+      client.stop();
+      Serial.println("connection closed !");
+    }    
+  }
+
+  
+
+
+
+
+
+
 
   if(readByte(MPU6050_ADDRESS, INT_STATUS) & 0x01)//Elleneröziük hogy van-e elérhető adat
     { 
     
-
+    
     //Gyorsulás
 
     readAccelData(accelCount);  // Gyorsulásadatok olvasása
@@ -178,7 +224,8 @@ void loop()
 
 	  uint32_t deltat = millis() - count;
     if(deltat > 2) {
-
+    
+    //client.stop();
     //Gyorsulás adatok átváltása MILIG-be
 	  //Serial.print(1000*ax); Serial.print(";");
 	  // Serial.print(1000*ay); Serial.print(";");
@@ -192,15 +239,39 @@ void loop()
     Serial.print(alt);
     Serial.println();
     
-	display.setTextSize(2);
+	
 	display.clearDisplay();
 	display.setCursor(0,0);
-	display.print(x_tengely_acc);display.setTextSize(1);display.println(" G");
-  display.setCursor(0,16);
-  display.setTextSize(2);
-  display.print(alt);display.setTextSize(1);display.println(" m");
+  client.print(meres_sorszam);
+  client.print(";");
+  //X
+  display.setTextSize(0.5);
+	display.print("X: ");display.print(ax);display.setTextSize(0.2);display.println(" G ");
+  client.print(ax);
+  client.print(";");
+
+  //Y
+  display.setTextSize(0.5);
+	display.print("Y: ");display.print(ay);display.setTextSize(0.2);display.println(" G ");
+  client.print(ay);
+  client.print(";");
+
+  //Z
+  display.setTextSize(0.5);
+	display.print("Z: ");display.print(az);display.setTextSize(0.2);display.print(" G ");
+  client.print(az);
+  client.print(";");
+
+  display.setCursor(75,0);
+  display.setTextSize(0.5);
+	display.print("#: ");display.println(meres_sorszam);
+
+  display.setCursor(75,15);
+  display.setTextSize(0.5);
+  display.print(alt);display.setTextSize(0.5);display.print(" m");
 	display.display();
 
+  client.println(alt);
     count = millis(); //Stopper tárolása
     }
 

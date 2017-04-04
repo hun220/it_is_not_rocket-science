@@ -29,3 +29,36 @@
   while (Wire.available()) {
         dest[i++] = Wire.read(); }         // Put read results in the Rx buffer
 }
+
+
+
+alt_buffer = {0,0,0,0,0,0,0,0,0,0};
+
+  bool ejtoernyo_check(float curr_alt)
+  {
+    if ejtoernyo_nyitva = false{
+    int ernyo = 0;	
+    //Magasság buffer frissítése
+   for(int i = 0; i < 9; i++)
+    { 
+      if(alt_buffer[i] > alt_buffer[i+1])
+        {
+        ernyo++;	
+        }	
+      alt_buffer[i] = alt_buffer[i+1];
+    }
+  alt_buffer[9] = curr_alt;
+
+  if(ernyo > 7)
+    {
+    //szervo_nyit
+    GlobaL_ejtoernyo_nyitva = true
+    return true;
+    }
+    else
+    {
+    return false;
+    }
+    }
+
+}

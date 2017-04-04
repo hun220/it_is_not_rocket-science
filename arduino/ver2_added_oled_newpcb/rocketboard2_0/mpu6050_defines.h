@@ -148,7 +148,7 @@ int Ascale = AFS_2G;
 float aRes, gRes; // scale resolutions per LSB for the sensors
 
 // Pin definitions
-int intPin = 12;  // This can be changed, 2 and 3 are the Arduinos ext int pins
+#define intPin D7  // This can be changed, 2 and 3 are the Arduinos ext int pins
 
 int16_t accelCount[3];           // Stores the 16-bit signed accelerometer sensor output
 float ax, ay, az;                // Stores the real accel value in g's
