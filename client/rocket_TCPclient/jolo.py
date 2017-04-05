@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'gui3.ui'
+#
+# Created by: PyQt5 UI code generator 5.8
+#
+# WARNING! All changes made in this file will be lost!
 import sys
 import socket
 import time
@@ -27,6 +34,7 @@ def TCPconnection(q):
 
 
 class Ui_applicationGUI(QtWidgets.QWidget):
+    plotsignal = pyqtSignal(list)
     def setupUi(self, applicationGUI):
         applicationGUI.setObjectName("applicationGUI")
         applicationGUI.resize(1045, 635)
@@ -123,7 +131,7 @@ class Ui_applicationGUI(QtWidgets.QWidget):
         self.disconnectButton.setObjectName("disconnectButton")
         self.label_2 = QtWidgets.QLabel(self.tab)
         self.label_2.setGeometry(QtCore.QRect(450, 40, 471, 441))
-        self.label_2.setText.connect(self.get_plot)
+        self.label_2.setText.plotsignal.connect(self.get_plot)
         self.label_2.setTextFormat(QtCore.Qt.RichText)
         self.label_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.label_2.setObjectName("label_2")
@@ -186,6 +194,10 @@ class Ui_applicationGUI(QtWidgets.QWidget):
         self.retranslateUi(applicationGUI)
         self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(applicationGUI)
+        
+        def get_plot(self):
+            
+            
 
     def retranslateUi(self, applicationGUI):
         _translate = QtCore.QCoreApplication.translate
@@ -200,8 +212,6 @@ class Ui_applicationGUI(QtWidgets.QWidget):
         self.groupBox_4.setTitle(_translate("applicationGUI", "Kalkulációk"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("applicationGUI", "Adatok - Grafikonok"))
         self.label.setText(_translate("applicationGUI", "Rakéta Adatgyüjtő Földi Állomás"))
-    
-    def get_plot(self, ):
 
 
 class guiManager(Ui_applicationGUI):
@@ -225,7 +235,7 @@ class guiManager(Ui_applicationGUI):
                 self.data.append(q.get())
 
                 konstans = [0,1,2,3,4,5,6,7,8,9,10,11,13,60]
-                konstans.emit(value)
+                self.plotsignal.emit(konstans)
                # sorszamok = []
                 #for sorszam in self.data:
                  #   sorszamok.append(sorszam[0])

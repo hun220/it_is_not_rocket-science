@@ -60,7 +60,7 @@ delay(800);
 //==========================================================
   display.setCursor(20,10);
   
-   WiFi.begin("hun220","Gurami66ginkO");
+   WiFi.begin("LENOVO","8P535$k3");
    delay(1000);
    while (WiFi.status() != WL_CONNECTED) {
     display.print(".");
