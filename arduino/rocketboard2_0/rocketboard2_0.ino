@@ -60,7 +60,7 @@ delay(800);
 //==========================================================
   display.setCursor(20,10);
   
-   WiFi.begin("LENOVO","8P535$k3");
+   WiFi.begin("hun220","Gurami66ginkO");
    delay(1000);
    while (WiFi.status() != WL_CONNECTED) {
     display.print(".");
@@ -73,7 +73,8 @@ delay(800);
   display.println("Network Online!");
   display.println(WiFi.localIP());
   server.begin();
-  //client.setNoDelay(1);
+  server.setNoDelay(true);
+  client.setNoDelay(true);
   display.display();
   delay(3000);
 
@@ -173,7 +174,7 @@ delay(800);
 void loop()
 {
    
-  // wait for a new client:
+  //Várakozás földre:
   if (!client) 
   {
       client = server.available();
@@ -183,7 +184,7 @@ void loop()
      if (client.status() == CLOSED) 
      {
       client.stop();
-      Serial.println("connection closed !");
+      Serial.println("Conn lezarva");
     }    
   }
 
